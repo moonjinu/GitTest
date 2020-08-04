@@ -1,8 +1,9 @@
 package com.itwillbs.board;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class BoardBean {
+
 	private int bno;
 	private String name;
 	private String pass;
@@ -10,16 +11,11 @@ public class BoardBean {
 	private String content;
 	private int readcount;
 	private int re_ref;
-	private int re_seq;
 	private int re_lev;
+	private int re_seq;
 	private Date date;
-	
-	@Override
-	public String toString() {
-		return "BoardBean [bno=" + bno + ", name=" + name + ", pass=" + pass + ", subject=" + subject + ", content="
-				+ content + ", readcount=" + readcount + ", re_ref=" + re_ref + ", re_seq=" + re_seq + ", re_lev="
-				+ re_lev + ", date=" + date + ", ip=" + ip + ", file=" + file + "]";
-	}
+	private String ip;
+	private String file;
 	public int getBno() {
 		return bno;
 	}
@@ -62,17 +58,17 @@ public class BoardBean {
 	public void setRe_ref(int re_ref) {
 		this.re_ref = re_ref;
 	}
-	public int getRe_seq() {
-		return re_seq;
-	}
-	public void setRe_seq(int re_seq) {
-		this.re_seq = re_seq;
-	}
 	public int getRe_lev() {
 		return re_lev;
 	}
 	public void setRe_lev(int re_lev) {
 		this.re_lev = re_lev;
+	}
+	public int getRe_seq() {
+		return re_seq;
+	}
+	public void setRe_seq(int re_seq) {
+		this.re_seq = re_seq;
 	}
 	public Date getDate() {
 		return date;
@@ -92,23 +88,13 @@ public class BoardBean {
 	public void setFile(String file) {
 		this.file = file;
 	}
-	private String ip;
-	private String file;
 	
-	public BoardBean(int bno, String name, String pass, String subject, String content, int readcount, int re_ref,
-			int re_seq, int re_lev, Date date, String ip, String file) {
-		super();
-		this.bno = bno;
-		this.name = name;
-		this.pass = pass;
-		this.subject = subject;
-		this.content = content;
-		this.readcount = readcount;
-		this.re_ref = re_ref;
-		this.re_seq = re_seq;
-		this.re_lev = re_lev;
-		this.date = date;
-		this.ip = ip;
-		this.file = file;
+	
+	@Override
+	public String toString() {
+		return "BoardBean [bno=" + bno + ", name=" + name + ", pass=" + pass + ", subject=" + subject + ", content="
+				+ content + ", readcount=" + readcount + ", re_ref=" + re_ref + ", re_lev=" + re_lev + ", re_seq="
+				+ re_seq + ", date=" + date + ", ip=" + ip + ", file=" + file + "]";
 	}
+	
 }
