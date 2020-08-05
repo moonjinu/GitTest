@@ -41,18 +41,28 @@
 		// each() / $(요소 선택자).each()
 		// => 선택한 여러개의 요소를 순차적으로 접근할 때 사용
 		
-		// 배열의 값을 각각 접근해서 테이플 행에 추가
+		// 배열의 값을 각각 접근해서 테이블 행에 추가
 		// 테이블 태그에 배열의 값을 추가 - append()
 		
 		$.each(arr,function(index,item){
+			// index-위치, item-요소 값
 // 		 	alert("확인");
 // 			alert("index : "+index+", item : "+item.name);
 			
 			// 테이블에 추가
 			$('table').append("<tr><td>"+item.name+"</td><td>"+item.region+"</td></tr>");
 			
+			
+			
 		});
 		
+			// div - 3개 배열의 값 3개를 각각 하나씩 저장
+			
+			$('div').append(function(index){
+				var item = arr[index];
+				return item.name+" / "+item.region;
+			});
+				
 		
 		
 	});
