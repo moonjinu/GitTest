@@ -30,8 +30,25 @@
 			return col[index];
 			
 		});
+		//----------------------------------------------------------------//
+		
+		// 속성을 여러개 사용
+		// => 중괄호를 사용해서 여러개 동시에 처리 가능
+		$('h2').css({
+			color:'red',
+			backgroundColor:"black"
+		});
+		// 속성을 한번에 처리
+		// 글자색 - 검정색 & 배경색 - col배열 각각 지정
+		$('h2').css({
+			color:'black',
+			backgroundColor:function(index){
+				return col[index];
+			}
+		});
 		
 	});
+	
 </script>
 </head>
 <body>
