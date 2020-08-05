@@ -40,10 +40,10 @@
 		// div에 기존의 내용을 가져와서 + 해당 요소의 인덱스를 추가 후 화면에 출력
 		// 00 => [기존 값 ***** 인덱스 *****]
 		
-		$('div').html(function(index){
-			return index;
+		$('div').html(function(index,html){
+		//	alert("index : "+index+"\n html"+html);
+		return html+" ***** "+index+" ***** ";
 		});
-		
 		
 	});
 </script>
