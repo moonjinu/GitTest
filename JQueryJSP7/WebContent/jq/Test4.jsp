@@ -41,12 +41,20 @@
 	 	// 속성을 여러가지 적용
 	 	// 테두리(border) - 5, 가로길이(width)-300, 세로길이(height)-150
 	 	$('img').attr({
-	 		'border':5,
-	 		'width':300,
-	 		'height':150
+	 		border:5,
+	 		width:300,
+	 		height:150
 	 	});
 	 
-		
+	 	// 속성을 여러가지 적용
+	 	// 테두리(border) - 5/ 가로길이(width)-50,100,150 /세로길이(height)-150
+		$('img').attr({
+			border:5,
+			height:150,
+			width:function(index){
+				return(index+1)*50;
+				}	
+		});
 	});
 
 
