@@ -53,7 +53,6 @@
 			$('table').append("<tr><td>"+item.name+"</td><td>"+item.region+"</td></tr>");
 			
 			
-			
 		});
 		
 			// div - 3개 배열의 값 3개를 각각 하나씩 저장
