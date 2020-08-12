@@ -30,9 +30,7 @@
 <body>
 <div id="wrap">
 <!-- 헤더들어가는 곳 -->
-<header>
-<div id="login"><a href="../member/login.html">login</a> | <a href="../member/join.html">join</a></div>
-<div class="clear"></div>
+<jsp:include page="../inc/top.jsp"/>
 <!-- 로고들어가는 곳 -->
 <div id="logo"><img src="../images/logo.gif" width="265" height="62" alt="Fun Web"></div>
 <!-- 로고들어가는 곳 -->
@@ -71,7 +69,7 @@
 </fieldset>
 <div class="clear"></div>
 <div id="buttons">
-<input type="button" value="Submit" class="submit">
+<input type="submit" value="확인" class="submit">
 <input type="button" value="Cancel" class="cancel">
 </div>
 </form>

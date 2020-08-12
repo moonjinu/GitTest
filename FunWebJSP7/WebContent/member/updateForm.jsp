@@ -133,15 +133,15 @@
 <!-- 본문내용 -->
 <article>
 <h1>회원 정보 수정</h1>
-<form action="" id="join">
+<form action="updatePro.jsp" id="join">
 <fieldset>
- 	<form action="updatePro.jsp" method="post" name ="fr">
+ 	
 		<hr>
 		<h4>수정할 정보</h4>
 		<label>아이디</label>
 		<input type="text" name="id" value="<%=id%>" readonly> <br>
 		<label>변경할 비밀번호</label>
-		<input type="password" name="pass" > <br>
+		<input type="password" name="pass1" > <br>
 		<label>비밀번호 확인</label>
 		<input type="password" name="pass" > <br>
 		<label>이름</label><input type="text" name="name" value="<%=name%>"> <br>
@@ -163,11 +163,10 @@
 <input type="text" name="phone" value="<%=phone%>"><br>
 <label>핸드폰</label>
 <input type="text" name="mobile" value="<%=mobile%>"><br>
-	</form>
 </fieldset>
 <div class="clear"></div>
 <div id="buttons">
-<input type="button" value="회원정보 수정" class="submit">
+<input type="submit" value="회원정보 수정" class="submit">
 <input type="button" value="회원 탈퇴" class="cancel">
 </div>
 </form>
