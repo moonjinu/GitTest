@@ -163,11 +163,70 @@ public class MemberDAO {
 			return result;
 		}
 	
-	
-	
-	
-	
-	
+
 	// 로그인 체크하는 메서드 idcheck(id, pass);
+		
+	// 회원정보 수정 updateMember(mb)
+		public int updateMember(MemberBean mb){
+			int result = -1;
+			
+
+				try {
+					con = getCon();
+					// 3 sql 작성 (select)-수정하는 사람이 있는지를 체크
+					sql = "select pass from fun_member where id=?";
+					//   pstmt 객체 생성
+					pstmt = con.prepareStatement(sql);
+					
+					pstmt.setString(1, mb.getId());
+					
+					// 4 실행
+					rs = pstmt.executeQuery();
+					
+					// 5 데이터 처리
+					//   사용자 o -비밀번호 체크(o/x) => 비밀번호 수정(3,4 단계)
+					//   사용자 x
+					if(rs.next()){
+						if(mb.getPass().equals(rs.getString("pass"))){
+							// 데이터 수정
+							
+							// 3 sql & pstmt
+							sql = "update fun_member set name=?,birth=?,gender=?,email=? "
+									+ "where id=?";
+							
+							pstmt = con.prepareStatement(sql);
+							pstmt.setString(1, mb.getName());
+							pstmt.setInt(2, mb.getBirth());
+							pstmt.setString(3, mb.getGender());
+							pstmt.setString(4, mb.getEmail());
+							pstmt.setString(5, mb.getId());
+							
+							// 4 실행
+							pstmt.executeUpdate();
+							
+							System.out.println(" 정보수정 완료 ");
+							
+							result = 1;
+						}else{
+							result = 0;
+						}				
+					}else{
+						// 사용자가 없는경우
+						result = -1;
+					}
+					
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}finally{
+					closeDB();
+				}
+
+			return result;
+		}
+		
+	// 회원정보 수정 updateMember(mb)
+		
+	
 
 }

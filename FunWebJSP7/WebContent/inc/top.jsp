@@ -20,7 +20,7 @@
     <%
     	}else{
     %>
-    	<div id="login"><%=id %>님  환영합니다.
+    	<div id="login"><%=id %>님  환영합니다. | <a href="../member/checkPassForm.jsp">회원정보 수정</a>
     	| <a href="../member/logout.jsp">로그아웃</a></div>
     
     <%		

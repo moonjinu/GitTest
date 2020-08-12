@@ -335,7 +335,7 @@ public class BoardDAO {
 				System.out.println("DB연결 완료");
 				// SQL(select) - 작성자 확인
 				// 글이 있는 지 검색하는 sql구문 작성
-				sql = "select passwd from itwill_board "
+				sql = "select pass from fun_member "
 					+ "where bno=?";
 				
 				pstmt = con.prepareStatement(sql);
