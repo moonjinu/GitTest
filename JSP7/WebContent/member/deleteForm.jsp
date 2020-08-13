@@ -28,7 +28,7 @@
       <form action="deletePro.jsp" method="post">
         <!-- 화면에 해당 input 태그를 숨겨서 정보를 전달 -->
               아이디 : <input type="hidden" name="id" value="<%=id%>" readonly><br>
-              비밀번호 : <input type="password" name="pw"><br>
+              비밀번호 : <input type="password" name="pass"><br>
               
        <input type="submit" value="탈퇴 하기">      
       </form>   

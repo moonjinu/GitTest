@@ -165,7 +165,52 @@ public class MemberDAO {
 	
 
 	// 로그인 체크하는 메서드 idcheck(id, pass);
+	
+	// getMember(id)
+	public MemberBean getMember(String id){
+		MemberBean mb = null;
 		
+		// 1,2 디비 연결
+			try {
+				con = getCon();
+				// 3 SQL 작성 (select) &  pstmt
+				sql = "select * from fun_member where id = ?";
+				pstmt = con.prepareStatement(sql);
+				// 3-1 ?
+				pstmt.setString(1, id);
+				// 4 실행 -> rs
+				rs = pstmt.executeQuery();			
+				// 5 데이터 처리 		
+				if(rs.next()){
+					// DB에 있는 회원정보를 저장-> 페이지로 전달
+					mb = new MemberBean();
+					
+					mb.setBirth(rs.getInt("birth"));
+					mb.setEmail(rs.getString("email"));
+					mb.setGender(rs.getString("gender"));
+					mb.setId(rs.getString("id"));
+					mb.setName(rs.getString("name"));
+					mb.setPass(rs.getString("pass"));
+					mb.setReg_date(rs.getDate("reg_date"));
+					mb.setPhone(rs.getString("phone"));
+					mb.setMobile(rs.getString("mobile"));
+					mb.setAddr(rs.getString("addr"));
+					
+					System.out.println(" 회원정보 저장완료 ! ");
+					System.out.println(mb);
+				}
+				
+				System.out.println(" 구문 실행 완료! ");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally{
+				closeDB();
+			}
+			return mb;
+
+	}	
+	// getMember(id)	
 	// 회원정보 수정 updateMember(mb)
 		public int updateMember(MemberBean mb){
 			int result = -1;
@@ -174,7 +219,7 @@ public class MemberDAO {
 				try {
 					con = getCon();
 					// 3 sql 작성 (select)-수정하는 사람이 있는지를 체크
-					sql = "select pass from fun_member where id=?";
+					sql = "select * from fun_member where id=?";
 					//   pstmt 객체 생성
 					pstmt = con.prepareStatement(sql);
 					
@@ -191,15 +236,18 @@ public class MemberDAO {
 							// 데이터 수정
 							
 							// 3 sql & pstmt
-							sql = "update fun_member set name=?,birth=?,gender=?,email=? "
+							sql = "update fun_member set name=?,email=?,birth=?,gender=?, addr=?, phone=?, mobile=? "
 									+ "where id=?";
 							
 							pstmt = con.prepareStatement(sql);
 							pstmt.setString(1, mb.getName());
-							pstmt.setInt(2, mb.getBirth());
-							pstmt.setString(3, mb.getGender());
-							pstmt.setString(4, mb.getEmail());
-							pstmt.setString(5, mb.getId());
+							pstmt.setString(2, mb.getEmail());
+							pstmt.setInt(3, mb.getBirth());
+							pstmt.setString(4, mb.getGender());
+							pstmt.setString(5, mb.getAddr());
+							pstmt.setString(6, mb.getPhone());
+							pstmt.setString(7, mb.getMobile());
+							pstmt.setString(8, mb.getId());
 							
 							// 4 실행
 							pstmt.executeUpdate();
@@ -207,13 +255,34 @@ public class MemberDAO {
 							System.out.println(" 정보수정 완료 ");
 							
 							result = 1;
-						}else{
-							result = 0;
-						}				
+						}else if(!mb.getPass().equals(rs.getString("pass"))){
+							sql ="update fun_member set pass=?, name=?,email=?,birth=?,gender=?, addr=?, phone=?, mobile=? "
+									+ "where id=?";
+							pstmt = con.prepareStatement(sql);
+							pstmt.setString(1, mb.getPass());
+							pstmt.setString(2, mb.getName());
+							pstmt.setString(3, mb.getEmail());
+							pstmt.setInt(4, mb.getBirth());
+							pstmt.setString(5, mb.getGender());
+							pstmt.setString(6, mb.getAddr());
+							pstmt.setString(7, mb.getPhone());
+							pstmt.setString(8, mb.getMobile());
+							pstmt.setString(9, mb.getId());
+							
+							// 4 실행
+							pstmt.executeUpdate();
+							
+							System.out.println(" 비밀번호 수정 완료 ");
+						}else if(mb.getEmail().equals(rs.getString("email"))){
+							
+						}
+							result = 1;
+										
 					}else{
 						// 사용자가 없는경우
 						result = -1;
 					}
+
 					
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -226,7 +295,82 @@ public class MemberDAO {
 		}
 		
 	// 회원정보 수정 updateMember(mb)
+	// updateEmail(id, pass)
+		public int updateEmail(MemberBean mb){
+			int result = -1;
+			try {
+				con = getCon();
+				sql = "select email from fun_member where id=?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, mb.getId());
+				rs = pstmt.executeQuery();
+				if(rs.next()){
+					if(!mb.getEmail().equals(rs.getString("email"))){
+						sql = "update fun_member set email =? where id=?";
+						
+						pstmt = con.prepareStatement(sql);
+						pstmt.setString(1, mb.getEmail());
+						pstmt.setString(2, mb.getId());
+						
+						pstmt.executeUpdate();
+						System.out.println("이메일 수정 완료");
+						result = 1;
+					}else{
+						result=0;
+					}
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally{
+				closeDB();
+			}
+			
+			return result;
+		}
 		
-	
+	// updateEmail(id, pass)
+		
+	// deleteMember(id,pass)
+	public int deleteMember(String id, String pass){
+		int result = -1;
+		
+			try {
+				con = getCon();
+				
+				// 3 SQL 구문작성
+				sql = "select pass from fun_member where id=?";
+				pstmt = con.prepareStatement(sql);
+				
+				pstmt.setString(1, id);
+				System.out.println("비밀번호 :"+pass);
+				// 4 실행 -> rs
+				rs = pstmt.executeQuery();
+				
+				// 5 데이터처리	
+				if(rs.next()){
+					if(pass.equals(rs.getString("pass"))){
+						// 3
+						sql = "delete from fun_member where id=?";
+						pstmt = con.prepareStatement(sql);
+						pstmt.setString(1, id);
+						// 4
+						pstmt.executeUpdate();
+						result = 1;
+					}else{
+					   result = 0;	
+					}				
+				}else{
+					result =-1;
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally{
+				closeDB();
+			}
+		return result;
+	}
+	// deleteMember(id,pass)
 
 }

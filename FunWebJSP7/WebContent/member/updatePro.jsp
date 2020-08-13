@@ -1,3 +1,6 @@
+<%@page import="com.itwillbs.member.MemberBean"%>
+<%@page import="com.itwillbs.member.MemberDAO"%>
+<%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.Connection"%>
@@ -11,76 +14,49 @@
 </head>
 <body>
 <h1>updatePro.jsp</h1>
-<%
-		// 저장되는 파라미터값 불러오기
-		String id = request.getParameter("id");
-		String pass1 = request.getParameter("pass1");
-		String pass2 = request.getParameter("pass2");
-		String name = request.getParameter("name");
-		String email = request.getParameter("email");
-		int birth = Integer.parseInt(request.getParameter("birth"));
-		String gender = request.getParameter("gender");
-		String addr = request.getParameter("addr");
-		String phone = request.getParameter("phone");
-		String mobile = request.getParameter("mobile");
+	<%
+		// 로그인 상태 체크
 		
-	
+		String id = (String) session.getAttribute("id");
+
+		if(id == null){
+			response.sendRedirect("loginForm.jsp");
+		}
+		
 		// 한글처리
 		request.setCharacterEncoding("UTF-8");
-		// 사용자가 입력한 정보를 확인
-		// => 추후에 동작 추가
 		
-		// 사용자 정보 수정
-		
-		final String DRIVER = "com.mysql.jdbc.Driver";
-		final String DBURL = "jdbc:mysql://localhost:3306/jspdb";
-		final String DBID = "root";
-		final String DBPW = "1234";
-		/* 드라이버 로드, DB연결에 사용할 상수 설정 */
-		
-		// 1. 드라이버 로드
-		Class.forName(DRIVER);
-		System.out.println("드라이버 로드 성공!");
-		
-		// 2. DB 연결
-		Connection con = DriverManager.getConnection(DBURL, DBID, DBPW);
-		System.out.println("DB 연결 성공!");
-		
-		// 3. SQL작성 & pstmt 객체 생성
-		String sql = "update fun_member set name=?, birth=?, gender=?, addr=?, phone=?, "
-				+"mobile=?";
-		
-		PreparedStatement pstmt = con.prepareStatement(sql);
-		System.out.println("pstmt 객체 생성완료");
-		
-		
-		// 3-1. ??값 추가
-		pstmt.setString(2, name);
-		pstmt.setInt(3, birth);
-		pstmt.setString(4, gender);
-		pstmt.setString(5, addr);
-		pstmt.setString(6, phone);
-		pstmt.setString(7, mobile);
-		
-		System.out.println("?값 추가완료");
-		
-		// 4. 실행
-		int value = pstmt.executeUpdate();
-		if(value > 0){
-			System.out.println("실행완료(수정완료)"+value);
-		}else 
-			System.out.println("실행완료(수정실패)"+value);
-		// MYSQL 이동 후 정보수정 확인
-		
-		String sql2 = "select email from fun_member where id=?";
-		PreparedStatement pstmt2 = con.prepareStatement(sql2);
-		pstmt.setString(1, id);
-		
+		// 전달된 파라미터값 저장 -> 액션태그사용 자바빈 객체
+	%>
 	
+		<jsp:useBean id="mb" class="com.itwillbs.member.MemberBean"/>
+		<jsp:setProperty property="*" name="mb"/>
+	
+	<%
+	
+		// MemberDAO객체 생성 -> 정보 수정 메서드 호출(updateMember(수정할 객체정보))
+		MemberDAO mdao = new MemberDAO();
 		
-	
-	
-	
+		int result = mdao.updateMember(mb);
+		
+		// 처리결과 리턴(1- 수정완료, 0 - 비밀번호 오류, -1 - 아이디 오류)
+		
+		// 처리결과에 따른 페이지 이동
+		if (result == 1){
+			// result == 1
+			response.sendRedirect("../main/main.jsp");
+			session.setAttribute("id", id);
+			
+		}else{
+			// result == -1		
+					
+			%>
+			<script type="text/javascript">
+			alert("아이디 오류");
+			history.back();
+			</script>
+			<%
+		}
 	
 	%>
 </body>

@@ -43,3 +43,10 @@ JSTL(JSP Standeard Tag Library)
 	 
 	 * JSTL에서는 JS의 값을 받아올 수 있다 - (x)
 	 * JS에서는 JSTL의 값을 사용할 수 있다 - (o)
+	 
+	 * EL(Expression Language) 표현식
+	 	=> <%= %>대신 사용하는 코드
+	 	=> ${ 식 / 변수 }
+	 	
+	 	 
+	 	

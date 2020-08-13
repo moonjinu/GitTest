@@ -1,3 +1,5 @@
+<%@page import="com.itwillbs.member.MemberBean"%>
+<%@page import="com.itwillbs.member.MemberDAO"%>
 <%@page import="java.sql.Timestamp"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.PreparedStatement"%>
@@ -7,73 +9,27 @@
     pageEncoding="UTF-8"%>
 <%
 		// 로그인 여부 체크(로그인x -> 로그인페이지 이동)
+			request.setCharacterEncoding("UTF-8");
 		
 			String id = (String) session.getAttribute("id");
 	 
-	 		if(id ==null){
-	 		// 로그인페이지 이동
-	 		response.sendRedirect("loginForm.jsp");
-	 		}
-		
-		// DB연결 -> 로그인한 사용자의 정보 가져오기 => 화면에 출력(각각의 요소)
-		// DB로 이동해서 정보를 가져오기
-			request.setCharacterEncoding("UTF-8");
-		
-			final String DRIVER = "com.mysql.jdbc.Driver";
-			final String DBURL = "jdbc:mysql://localhost:3306/jspdb";
-			final String DBID = "root";
-			final String DBPW = "1234";
-		 	
-		// 1. 드라이버 로드
-			Class.forName(DRIVER);
-		
-			System.out.println("드라이버 로드 성공");
-		
-		// 2. DB연결
-			Connection con = DriverManager.getConnection(DBURL, DBID, DBPW);
-		
-			System.out.println("DB연결 성공");
-	
-		// 3. SQL 구문(select) & pstmt 객체 생성
-			String sql = "select * from fun_member where id = ?";
+			if(id == null){
+				  response.sendRedirect("loginForm.jsp");
+			 }
 			
-			PreparedStatement pstmt = con.prepareStatement(sql);
-			
-			pstmt.setString(1, id);
-			
-			// 4. 실행 -> 결과 저장(rs)
-			ResultSet rs = pstmt.executeQuery();
-			
-			System.out.println("DB저장 완료");
-			// 5. 검색결과 사용하기 -> 테이블 생성 후 추가
-	
-			String name="";
-			String pass="";
-			int birth=0;
-			String email="";
-			String addr="";
-			String phone="";
-			String mobile="";
-			String gender="";
-			Timestamp reg_date = null;
+			MemberDAO mdao =new MemberDAO();
+			MemberBean mb = mdao.getMember(id);
 		
-			if(rs.next()){
-			// DB정보를 가져오기 -> 화면에 출력
-			// id = rs.getString("id");
-			name = rs.getString("name");
-			pass = rs.getString("pass");
-			email = rs.getString("email");
-			birth = rs.getInt("birth");
-			gender = rs.getString("gender");
-			addr = rs.getString("addr");
-			phone = rs.getString("phone");
-			mobile = rs.getString("mobile");
-			reg_date = rs.getTimestamp("reg_date");
-			}
-			
-			if(gender == null){
-				gender="남";
-			}
+			String pass = mb.getPass();
+			String name = mb.getName();
+			String email = mb.getEmail();
+			int birth = mb.getBirth();
+			String gender = mb.getGender();
+			String addr = mb.getAddr();
+			String phone = mb.getPhone();
+			String mobile = mb.getMobile();
+					
+
 %>
 <!DOCTYPE html>
 <html>
@@ -133,13 +89,13 @@
 <!-- 본문내용 -->
 <article>
 <h1>회원 정보 수정</h1>
-<form action="updatePro.jsp" id="join">
+<form action="updatePro.jsp" method="post" id="join">
 <fieldset>
  	
 		<hr>
 		<h4>수정할 정보</h4>
 		<label>아이디</label>
-		<input type="text" name="id" value="<%=id%>" readonly> <br>
+		<input type="text" name="id" value="<%=id%>" > <br>
 		<label>변경할 비밀번호</label>
 		<input type="password" name="pass1" > <br>
 		<label>비밀번호 확인</label>
@@ -167,7 +123,7 @@
 <div class="clear"></div>
 <div id="buttons">
 <input type="submit" value="회원정보 수정" class="submit">
-<input type="button" value="회원 탈퇴" class="cancel">
+<input type="submit" value="회원 탈퇴" class="cancel" formaction="deletePro.jsp">
 </div>
 </form>
 </article>

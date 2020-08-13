@@ -60,8 +60,8 @@
 	
 	<hr>
 	<!-- 특정 영역에 저장된 값을 삭제 -->
-	<c:out value="<c:remove> 사용해서 값 삭제" />
-	
+	<%-- <c:out value="<c:remove> 사용해서 값 삭제" />
+ --%>	
 	<!-- request 영역에 있는 name 값을 삭제 -->
 	<c:remove var="name" scope="request"/>
 	
