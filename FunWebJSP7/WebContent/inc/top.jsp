@@ -36,7 +36,7 @@
 			<li><a href="../index.jsp">HOME</a></li>
 			<li><a href="../company/welcome.html">COMPANY</a></li>
 			<li><a href="#">SOLUTIONS</a></li>
-			<li><a href="../center/notice.jsp">CUSTOMER CENTER</a></li>
+			<li><a href="../center/notice.jsp">BOARD</a></li>
 			<li><a href="#">CONTACT US</a></li>
 		</ul>
 		</nav>

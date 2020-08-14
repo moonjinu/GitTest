@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="com.itwillbs.board.BoardBean"%>
 <%@page import="java.util.List"%>
 <%@page import="com.itwillbs.board.BoardDAO"%>
@@ -53,9 +54,28 @@
 			 // 테이블에 저장된 글의 개수 계산 메서드
 			 // getBoardCount()
 			 int count = bdao.getBoardCount();
+			// ---------------------------------페이징 처리---------------------------------------------------------------
+				
+			// 한 페이지에서 보여줄 글의 개수 설정
+			int pageSize = 5;
+			// 현 페이지의 페이지값을 확인
+			String pageNum = request.getParameter("pageNum");
+			if(pageNum == null){ // 페이지 정보가 없을 경우 항상 1페이지
+				pageNum = "1";
+			}
+			
+			// 시작 행번호 계산 1...10, 11...20, 21...30, 31...40, ...		
+			int currentPage = Integer.parseInt(pageNum);
+			
+			int startRow = (currentPage-1)*pageSize+1;
+			
+			// 끝 행번호 계산
+			int endRow = currentPage * pageSize;
+			
+			// ---------------------------------페이징 처리---------------------------------------------------------------
+			
 			 
-			 
-             List boardList = null;			 
+             ArrayList boardList = null;			 
 			 if(count != 0){
 			 // 글이 있을경우 모든 글의 정보를 가져오는 메서드
 				 boardList = bdao.getBoardList();
@@ -82,7 +102,20 @@
 				%>
 				<tr>
 					<td><%=bb.getBno()%></td>
-					<td class="left"><%=bb.getSubject()%></td>
+					<td class="left">
+			<%
+				// 답글 들여쓰기 처리
+				int wid = 0;
+				// 답글일때
+				if(bb.getRe_lev()>0){
+					wid = 10 * bb.getRe_lev();
+			%>
+				<img src="level.gif" width="<%=wid %>" height="15">
+				<img src="re.gif">
+			<% }%>
+				<a href="content.jsp?bno=<%=bb.getBno()%>&pageNum=<%=pageNum%>"><%=bb.getSubject()%></a>
+			</td>
+					<%-- <td class="left"><%=bb.getSubject()%></td> --%>
 					<td><%=bb.getName()%></td>
 					<td><%=bb.getDate()%></td>
 					<td><%=bb.getReadcount()%></td>
@@ -95,6 +128,7 @@
 				<input type="text" name="search" class="input_box"> <input
 					type="button" value="search" class="btn">
 			</div>
+			<!-- 페이지 이동  -->
 			<div class="clear"></div>
 			<div id="page_control">
 				<a href="#">Prev</a> <a href="#">1</a><a href="#">2</a><a href="#">3</a>

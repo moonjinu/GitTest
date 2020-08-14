@@ -79,18 +79,18 @@ border-bottom-style: dotted;border-bottom-color: #999}
 /*글자정렬 center
 안여백 6px 0 테두리아래너비 1px 테두리아래스타일dotted
 테두리아래색 #999*/
-article table#notice td.left{text-align: left;}
+article table#notice td.left{text-align: left; padding-left: 10px;}
 /*글자정렬 left*/
 article th.tno{width: 50px;
 border-top-left-radius:5px;
 border-bottom-left-radius:5px;
 }/*너비 50px 
 왼쪽위 둥글게5px 왼쪽아래 둥글게5px*/
-article th.ttitle{width: 400px; letter-spacing: 0.7em}
+article th.ttitle{width: 400px; letter-spacing: 0.7em; text-align: center;}
 /*너비 400px 문자간격 0.7em*/
-article th.twrite{width: 100px;}
+article th.twrite{width: 100px; text-align: center;}
 /*너비 100px*/
-article th.tdate{width: 50px;}
+article th.tdate{width: 100px; text-align: center;}
 /*너비 50px*/
 article th.tread{width: 50px;
 border-top-right-radius:5px;
