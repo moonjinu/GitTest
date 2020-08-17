@@ -487,8 +487,8 @@ public class BoardDAO {
 				pstmt.setInt(7, bb.getRe_ref()); // 기존 원글의 그룹번호와 동일 
 				pstmt.setInt(8, bb.getRe_lev()+1); // 기존의 값 +1
 				pstmt.setInt(9, bb.getRe_seq()+1); // 기존의 값 +1
-				pstmt.setString(10, bb.getFile());
-				pstmt.setString(11, bb.getIp());
+				pstmt.setString(10, bb.getIp());
+				pstmt.setString(11, bb.getFile());
 				
 				// 실행
 				
