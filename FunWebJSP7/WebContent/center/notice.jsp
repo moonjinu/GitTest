@@ -76,7 +76,7 @@
 			<ul>
 				<li><a href="writeForm.jsp">글쓰기</a></li>
 				<li><a href="notice.jsp">글 목록 보기</a></li>
-				<li><a href="fileUploadForm.jsp">파일업로드/다운로드</a></li>
+				<li><a href="../fileUp/up.jsp">파일업로드/다운로드</a></li>
 				<li><a href="#">Service Policy</a></li>
 			</ul>
 		</nav>

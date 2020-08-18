@@ -123,7 +123,7 @@
 			%>
 				
 				<input type="button" value="답글 쓰기" onclick="location.href='reWriteForm.jsp?bno=<%=bb.getBno()%>&re_ref=<%=bb.getRe_ref()%>&re_lev=<%=bb.getRe_lev()%>&re_seq=<%=bb.getRe_seq()%>'">
-				<input type="button" value="목록으로" onclick="location.href='boardList.jsp?pageNum=<%=pageNum%>'">
+				<input type="button" value="목록으로" onclick="location.href='notice.jsp?pageNum=<%=pageNum%>'">
 			</td>
 		</tr>		
 	</table>
