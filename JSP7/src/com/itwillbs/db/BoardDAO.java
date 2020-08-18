@@ -373,6 +373,7 @@ public class BoardDAO {
 			System.out.println("pstmt ? 값 설정 완료");
 			rs = pstmt.executeQuery();
 			System.out.println("pstmt 실행 및 rs저장 완료");
+			
 			if(rs.next()){
 				if(bb.getPasswd().equals(rs.getString("passwd"))){ // 비밀번호 비교 (수정할 때 저장한 비밀번호 / DB에 저장된 비밀번호)
 					sql = "update itwill_board set name=?, subject=?, content=? "

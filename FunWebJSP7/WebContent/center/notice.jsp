@@ -22,31 +22,10 @@
    /* EXAMPLE */
    DD_belatedPNG.fix('#wrap');
    DD_belatedPNG.fix('#main_img');   
-
  </script>
  <![endif]-->
 </head>
 <body>
-	<div id="wrap">
-		<!-- 헤더들어가는 곳 -->
-		<jsp:include page="../inc/top.jsp" />
-		<!-- 헤더들어가는 곳 -->
-
-		<!-- 본문들어가는 곳 -->
-		<!-- 메인이미지 -->
-		<div id="sub_img_center"></div>
-		<!-- 메인이미지 -->
-
-		<!-- 왼쪽메뉴 -->
-		<nav id="sub_menu">
-			<ul>
-				<li><a href="writeForm.jsp">글쓰기</a></li>
-				<li><a href="#">글 목록 보기</a></li>
-				<li><a href="fileUploadForm.jsp">파일업로드/다운로드</a></li>
-				<li><a href="#">Service Policy</a></li>
-			</ul>
-		</nav>
-		<!-- 왼쪽메뉴 -->
 
 		<%
 			 // BoardDAO 객체 생성
@@ -57,7 +36,7 @@
 			// ---------------------------------페이징 처리---------------------------------------------------------------
 				
 			// 한 페이지에서 보여줄 글의 개수 설정
-			int pageSize = 5;
+			int pageSize = 10;
 			// 현 페이지의 페이지값을 확인
 			String pageNum = request.getParameter("pageNum");
 			if(pageNum == null){ // 페이지 정보가 없을 경우 항상 1페이지
@@ -78,9 +57,30 @@
              ArrayList boardList = null;			 
 			 if(count != 0){
 			 // 글이 있을경우 모든 글의 정보를 가져오는 메서드
-				 boardList = bdao.getBoardList();
+				 boardList = bdao.getBoardList(startRow, pageSize);
 			 }
 		%>
+
+	<div id="wrap">
+		<!-- 헤더들어가는 곳 -->
+		<jsp:include page="../inc/top.jsp" />
+		<!-- 헤더들어가는 곳 -->
+
+		<!-- 본문들어가는 곳 -->
+		<!-- 메인이미지 -->
+		<div id="sub_img_center"></div>
+		<!-- 메인이미지 -->
+
+		<!-- 왼쪽메뉴 -->
+		<nav id="sub_menu">
+			<ul>
+				<li><a href="writeForm.jsp">글쓰기</a></li>
+				<li><a href="notice.jsp">글 목록 보기</a></li>
+				<li><a href="fileUploadForm.jsp">파일업로드/다운로드</a></li>
+				<li><a href="#">Service Policy</a></li>
+			</ul>
+		</nav>
+		<!-- 왼쪽메뉴 -->
 
 		<!-- 게시판 -->
 		<article>
@@ -131,9 +131,51 @@
 			<!-- 페이지 이동  -->
 			<div class="clear"></div>
 			<div id="page_control">
-				<a href="#">Prev</a> <a href="#">1</a><a href="#">2</a><a href="#">3</a>
-				<a href="#">4</a><a href="#">5</a><a href="#">6</a> <a href="#">7</a><a
-					href="#">8</a><a href="#">9</a> <a href="#">10</a> <a href="#">Next</a>
+			<%
+		// 다른페이지 이동버튼
+		
+		if(count !=0){
+			// 전체 페이지수 - 글 50, 화면에 10개씩 출력 => 5페이지
+			// 			- 글 56, 화면에 10개씩 출력 => 6페이지
+			
+			int pageCount = count/pageSize+(count % pageSize == 0? 0:1);
+			
+			// 한 화면에 보여줄 페이지 번호 개수
+			int pageBlock = 10;
+			
+			// 페이지 블럭의 시작 페이지 번호
+			int startPage = ((currentPage-1)/pageBlock)*pageBlock+1;
+			
+			// 페이지 블럭의 끝 페이지 번호
+			int endPage = startPage+pageBlock-1;
+			if(endPage > pageCount){
+				endPage = pageCount;
+			}
+			// 이전
+			if(currentPage !=1){
+				%>
+				<a href="notice.jsp?pageNum=<%=currentPage-1%>">Prev</a>
+				<%
+			}
+			
+			// 숫자(1...10, 11...20, ...)
+			for(int i=startPage;i<=endPage;i++){
+				%>
+				<a href="notice.jsp?pageNum=<%=i%>"><%=i %></a>
+				<%
+				
+			}
+			// 다음
+			if(currentPage < endPage ){
+				%>
+				<a href="notice.jsp?pageNum=<%=currentPage+1%>">Next</a>
+				<%
+			}
+		}
+	
+	
+	
+	%>
 			</div>
 		</article>
 		<!-- 게시판 -->

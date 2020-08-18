@@ -109,7 +109,7 @@
 			int pageCount = cnt/pageSize+(cnt % pageSize == 0? 0:1);
 			
 			// 한 화면에 보여줄 페이지 번호 개수
-			int pageBlock = 2;
+			int pageBlock = 5;
 			
 			// 페이지 블럭의 시작 페이지 번호
 			int startPage = ((currentPage-1)/pageBlock)*pageBlock+1;

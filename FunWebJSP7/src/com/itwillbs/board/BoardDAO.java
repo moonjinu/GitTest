@@ -340,11 +340,15 @@ public class BoardDAO {
 				
 				pstmt = con.prepareStatement(sql);
 				System.out.println("pstmt 객체 생성 완료");
+				
 				pstmt.setInt(1, bb.getBno());
 				System.out.println("pstmt ? 값 설정 완료");
+				
 				rs = pstmt.executeQuery();
 				System.out.println("pstmt 실행 및 rs저장 완료");
+				System.out.println(bb.getPass());
 				if(rs.next()){
+					System.out.println(rs.getString("pass"));
 					if(bb.getPass().equals(rs.getString("pass"))){ // 비밀번호 비교 (수정할 때 저장한 비밀번호 / DB에 저장된 비밀번호)
 						sql = "update fun_board set name=?, subject=?, content=? "
 							+ "where bno = ?";
