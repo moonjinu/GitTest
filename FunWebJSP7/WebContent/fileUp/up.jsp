@@ -56,7 +56,7 @@
 <article>
 <h1> 파일 업로드 </h1>
 
-   <form action="upLoard.jsp" method="post" name="fr">
+   <form action="upload.jsp" method="post" name="fr" enctype="multipart/form-data">
 	<table id="notice">
 	  <tr>
 	    <td>글쓴이</td>
@@ -84,7 +84,7 @@
 	  </tr>	
 	</table>
 	<div id="table_search">
-		<input type="submit" value="글쓰기" class="btn">
+		<input type="submit" value="파일업로드" class="btn">
 	</div>
 	<div class="clear"></div>
    </form>

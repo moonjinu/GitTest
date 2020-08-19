@@ -6,14 +6,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=euc-kr">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
 
 	<%
 	  // 전달되는 데이터 인코딩 
-	  request.setCharacterEncoding("EUC-KR");
+	  request.setCharacterEncoding("UTF-8");
 	   
 	  // 업로드 폴더 지정 (절대경로)
 	  String savePath = "D:\\upfile";
@@ -31,7 +31,7 @@
 						  request,
 						  savePath,
 						  maxSize,
-						  "EUC-KR",
+						  "UTF-8",
 						  new DefaultFileRenamePolicy()
 						  );
 		  

@@ -14,7 +14,7 @@
 <body>
 <% 
 	//다운로드할 파일 이름(업로드한 파일 이름)이 한글일경우 한글깨짐 방지를 위한 문자셋 방식을 EUC_KR로 지정 
-    String filename = new String((request.getParameter("filename")).getBytes("8859_1"), "EUC_KR");
+    String filename = new String((request.getParameter("filename")).getBytes("8859_1"), "UTF-8");
     String filePath = "d:/upfile/"; // 다운로드(업로드)절대경로.
     InputStream in = null;
     OutputStream os = null;
@@ -28,7 +28,7 @@
         String fname2 = "";
         String fname = "";
         fname = filename;
-        fname1 = new String(fname.getBytes("8859_1"), "euc-kr");
+        fname1 = new String(fname.getBytes("8859_1"), "UTF-8");
 
         try {
             file = new File(filePath, fname);
@@ -39,7 +39,7 @@
             skip = true;
         } //catch
 
-        fname2 = new String(fname1.getBytes("euc-kr"), "8859_1");
+        fname2 = new String(fname1.getBytes("UTF-8"), "8859_1");
 
         response.reset();
         //클라이언트가 다운로드 요청시 사용한 웹브라우저 정보 얻기
@@ -56,11 +56,11 @@
             if (client.indexOf("MSIE 5.5") != -1) {
                 response.setHeader("Content-Type", "doesn/matter; charset=euc-kr");
                 response.setHeader("Content-Disposition",
-                        "filename=" + new String(fname.getBytes("euc-kr"), "8859_1"));
+                        "filename=" + new String(fname.getBytes("UTF-8"), "8859_1"));
             } else {
                 response.setHeader("Content-Type", "application/octet-stream; charset=euc-kr");
                 response.setHeader("Content-Disposition",
-                        "attachment; filename=" + new String(fname.getBytes("euc-kr"), "8859_1"));
+                        "attachment; filename=" + new String(fname.getBytes("UTF-8"), "8859_1"));
             } //else
             response.setHeader("Content-Transfer-Encoding", "binary;");
             response.setHeader("Content-Length", "" + file.length());
