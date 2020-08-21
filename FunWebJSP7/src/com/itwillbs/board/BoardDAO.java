@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Generated;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
@@ -508,5 +509,101 @@ public class BoardDAO {
 			}
 		}
 		// reInsertBoard()
+		
+		// replyBoard(int bno) : 댓글쓰기 처리
+		public BoardBean replyBoard(int bno) {
+			BoardBean bb1 = null;
+			try {
+				// 디비연결
+				con = getCon();
+
+				// sql(1) 글번호 계산,(2) 글정보를 저장
+				sql = "select bno from content_reply where content=?";
+
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, bno);
+				// 실행
+				rs = pstmt.executeQuery();
+
+				if (rs.next()) {
+//					sql = "insert into fun_board (bno,name,pass,content,re_ref,re_lev,re_seq,date) " + "values(?,?,?,?,?,?,?,now())";
+					bb1 = new BoardBean();
+					
+					bb1.setBno(rs.getInt("bno"));
+					bb1.setContent(rs.getString("content"));
+					bb1.setDate(rs.getDate("date"));
+					bb1.setName(rs.getString("name"));
+					bb1.setPass(rs.getString("pass"));
+					bb1.setRe_lev(rs.getInt("re_lev"));
+					bb1.setRe_ref(rs.getInt("re_ref"));
+					bb1.setRe_seq(rs.getInt("re_seq"));
+					
+					pstmt.executeUpdate();
+				}
+
+
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				closeDB();
+			}
+			return bb1;
+		}
+		// replyBoard(int bno) : 댓글쓰기 처리
+		// getReply 
+		// insertReply(bb) : 글쓰기 처리
+		public void insertReply(BoardBean bb1) {
+			int num = 0;
+			try {
+				// 디비연결
+				con = getCon();
+
+				// sql(1) 글번호 계산,(2) 글정보를 저장
+				sql = "select bno from content_reply ";
+
+				pstmt = con.prepareStatement(sql);
+				// 실행
+				rs = pstmt.executeQuery();
+
+				if (rs.next()) {
+					num = rs.getInt(1) + 1;
+				}
+
+					System.out.println("저장될 글번호 : " + num);
+	
+					// (2) 글정보를 저장
+					// sql
+					sql = "insert into content_reply (bno,name,pass,content,"
+							+ "re_ref,re_lev,re_seq,date) " + "values(?,?,?,?,?,?,?,now())";
+	
+					pstmt = con.prepareStatement(sql);
+	
+					pstmt.setInt(1, bb1.getBno());
+					pstmt.setString(2, bb1.getName());
+					pstmt.setString(3, bb1.getPass());
+					pstmt.setString(4, bb1.getContent());
+					pstmt.setInt(5, bb1.getRe_ref());
+					pstmt.setInt(6, bb1.getRe_lev());
+					pstmt.setInt(7, bb1.getRe_seq());
+					pstmt.setDate(8, bb1.getDate());
+					
+	
+					// 실행
+					pstmt.executeUpdate();
+
+				System.out.println(num + "번 글쓰기 완료!");
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				closeDB();
+			}
+
+		}
+		// insertReply(bb) : 글쓰기 처리
+		
+		// getReply
+
 
 }

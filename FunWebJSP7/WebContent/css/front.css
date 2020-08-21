@@ -50,10 +50,10 @@ background-position: left 15px;}
 #payment{background-image: url("../images/icon3.png");
 background-repeat: no-repeat;
 background-position: left 15px;}
-#sec_news,#news_notice{float: left; width: 420px;
+#sec_news,#news_notice,#map{float: left; width: 420px;
 margin: 15px 0 0 20px}
 /*정렬 왼쪽 너비 420px 밖여백 15px 0 0 20px */
-#sec_news h3,#news_notice h3{font-family: seo;
+#sec_news h3,#map h3{font-family: seo;
 font-size: 14px;font-style: italic;font-weight: normal;
 width: 420px;height: 24px;
 background-image: url("../images/h3_back.jpg");

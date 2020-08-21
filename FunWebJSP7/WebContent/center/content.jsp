@@ -33,6 +33,25 @@
  <![endif]-->
 </head>
 <body>
+<%
+		// 글 번호(pk)에 해당하는 글의 정보를 가져오기
+		
+		// 전달된 데이터 저장(bno, pageNum)
+		int bno = Integer.parseInt(request.getParameter("bno"));
+		String pageNum = request.getParameter("pageNum");
+	
+		// BoardDAO 객체 생성
+		BoardDAO bdao = new BoardDAO();
+		
+		// 글 조회수 정보를 1증가( updateReadCount(bno) )
+		bdao.updateReadCount(bno);
+		bdao.replyBoard(bno);
+		// 글 정보를 가져오는 메서드 생성( getBoard(bno) )
+		BoardBean bb = bdao.getBoard(bno);
+		BoardBean bb1 = bdao.getBoard(bno);
+		// 화면(테이블)에 출력
+	
+	%>
 <div id="wrap">
 <!-- 헤더들어가는 곳 -->
    <jsp:include page="../inc/top.jsp" />
@@ -46,10 +65,24 @@
 <!-- 왼쪽메뉴 -->
 <nav id="sub_menu">
 <ul>
-<li><a href="#">Notice</a></li>
-<li><a href="#">Public News</a></li>
-<li><a href="#">Driver Download</a></li>
-<li><a href="#">Service Policy</a></li>
+			<!-- 로그인정보가 없거나, 작성자 이름과 아이디가 다른 경우
+				 수정하기, 삭제하기 버튼 -> 숨김처리
+				 로그인한 아이디의 정보가 작성자 이름과 같은 경우
+				 수정하기, 삭제하기 버튼 -> 보여주기
+			-->
+			<%
+				// 로그인 정보를 가져와서 판단
+				// 세션값 가져오기
+				String id = (String) session.getAttribute("id");
+				if (id != null && id.equals(bb.getName())) {
+			%>
+			<li><a href="updateForm.jsp?bno=<%=bb.getBno()%>&pageNum=<%=pageNum%>">글 수정</a></li>
+			<li><a href="deleteForm.jsp?bno=<%=bb.getBno()%>&pageNum=<%=pageNum%>">글 삭제</a></li>
+			<%
+			}
+			%>
+<li><a href="reWriteForm.jsp?bno=<%=bb.getBno()%>&re_ref=<%=bb.getRe_ref()%>&re_lev=<%=bb.getRe_lev()%>&re_seq=<%=bb.getRe_seq()%>">답글 쓰기</a></li>
+<li><a href="notice.jsp?pageNum=<%=pageNum%>">글 목록 보기</a></li>
 </ul>
 </nav>
 <!-- 왼쪽메뉴 -->
@@ -57,24 +90,7 @@
 <!-- 게시판 -->
 <article>
 <h1>Board</h1>
-<%
-		// 글 번호(pk)에 해당하는 글의 정보를 가져오기
-		
-		// 전달된 데이터 저장(bno, pageNum)
-		int bno = Integer.parseInt(request.getParameter("bno"));
-		String pageNum = request.getParameter("pageNum");
-	
-		// BoardDAO 객체 생성
-		BoardDAO bdao = new BoardDAO();
-		
-		// 글 조회수 정보를 1증가( updateReadCount(bno) )
-		bdao.updateReadCount(bno);
-		
-		// 글 정보를 가져오는 메서드 생성( getBoard(bno) )
-		BoardBean bb = bdao.getBoard(bno);
-		// 화면(테이블)에 출력
-	
-	%>
+
 	
 	<table border="1">
 		<tr>
@@ -103,30 +119,20 @@
 			<td>글 내용</td>
 			<td colspan="3"><%=bb.getContent() %></td>
 		</tr>
-		<tr>
-			<td colspan="4">
-			<!-- 로그인정보가 없거나, 작성자 이름과 아이디가 다른 경우
-				 수정하기, 삭제하기 버튼 -> 숨김처리
-				 로그인한 아이디의 정보가 작성자 이름과 같은 경우
-				 수정하기, 삭제하기 버튼 -> 보여주기
-			-->
-			<%
-			// 로그인 정보를 가져와서 판단
-			// 세션값 가져오기
-			String id = (String) session.getAttribute("id");
-			if (id != null && id.equals(bb.getName())){
-			%> <!-- 아이디 존재하고 작성자와 아이디가 같은 경우 -->
-				<input type="button" value="수정하기" onclick="location.href='updateForm.jsp?bno=<%=bb.getBno()%>&pageNum=<%=pageNum%>'">
-				<input type="button" value="삭제하기" onclick="location.href='deleteForm.jsp?bno=<%=bb.getBno()%>&pageNum=<%=pageNum%>'">
-			<%	
-			}
-			%>
-				
-				<input type="button" value="답글 쓰기" onclick="location.href='reWriteForm.jsp?bno=<%=bb.getBno()%>&re_ref=<%=bb.getRe_ref()%>&re_lev=<%=bb.getRe_lev()%>&re_seq=<%=bb.getRe_seq()%>'">
-				<input type="button" value="목록으로" onclick="location.href='notice.jsp?pageNum=<%=pageNum%>'">
-			</td>
-		</tr>		
 	</table>
+	<form action="replyPro.jsp?bno=<%=bb.getBno()%>"> 
+	<table>
+		<tr>
+		<td>작성자</td>
+		<td><%=bb1.getName() %></td>
+		<td>내용</td>
+		<td><%=bb1.getContent() %></td>
+		<td>시간</td>
+		<td><%=bb1.getDate() %></td>
+		</tr>
+	</table>
+	댓글 작성<input type="text" name="reply"> <input type="submit">
+	</form>
 <div id="table_search">
 <input type="text" name="search" class="input_box">
 <input type="button" value="search" class="btn">
