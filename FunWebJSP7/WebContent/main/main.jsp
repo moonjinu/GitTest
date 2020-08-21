@@ -82,49 +82,38 @@ quis ante......</dd>
 
 	<%
 	request.setCharacterEncoding("UTF-8");
-	String addr_1 = request.getParameter("addr_1");
-	String addr_2 = request.getParameter("addr_2");
-	String addr = addr_1 = addr_1+addr_2;
-	
-	System.out.println(addr_1+addr_2);
 	%>
 	<script>
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-    mapOption = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+    mapOption = { 
+        center: new kakao.maps.LatLng(35.1584163, 129.0620714), // 지도의 중심좌표
         level: 3 // 지도의 확대 레벨
-    };  
+    };
 
-// 지도를 생성합니다    
-var map = new kakao.maps.Map(mapContainer, mapOption); 
+var map = new kakao.maps.Map(mapContainer, mapOption);
 
-// 주소-좌표 변환 객체를 생성합니다
-var geocoder = new kakao.maps.services.Geocoder();
+// 마커가 표시될 위치입니다 
+var markerPosition  = new kakao.maps.LatLng(35.1584163, 129.0620714); 
 
-// 주소로 좌표를 검색합니다
-geocoder.addressSearch('<%=addr_1%><%=addr_2%>', function(result, status) {
+// 마커를 생성합니다
+var marker = new kakao.maps.Marker({
+    position: markerPosition
+});
 
-    // 정상적으로 검색이 완료됐으면 
-     if (status === kakao.maps.services.Status.OK) {
+// 마커가 지도 위에 표시되도록 설정합니다
+marker.setMap(map);
 
-        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+var iwContent = '<div style="padding:5px;">아이티윌 부산교육센터 <br><a href="https://map.kakao.com/link/map/Hello World!,33.450701,126.570667" style="color:blue" target="_blank">큰지도보기</a> <a href="https://map.kakao.com/link/to/Hello World!,35.1584163, 129.0620714" style="color:blue" target="_blank">길찾기</a></div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+    iwPosition = new kakao.maps.LatLng(35.1584163, 129.0620714); //인포윈도우 표시 위치입니다
 
-        // 결과값으로 받은 위치를 마커로 표시합니다
-        var marker = new kakao.maps.Marker({
-            map: map,
-            position: coords
-        });
-
-        // 인포윈도우로 장소에 대한 설명을 표시합니다
-        var infowindow = new kakao.maps.InfoWindow({
-            content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
-        });
-        infowindow.open(map, marker);
-
-        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-        map.setCenter(coords);
-    } 
-});    
+// 인포윈도우를 생성합니다
+var infowindow = new kakao.maps.InfoWindow({
+    position : iwPosition, 
+    content : iwContent 
+});
+  
+// 마커 위에 인포윈도우를 표시합니다. 두번째 파라미터인 marker를 넣어주지 않으면 지도 위에 표시됩니다
+infowindow.open(map, marker); 
 
 	</script>
 </article>

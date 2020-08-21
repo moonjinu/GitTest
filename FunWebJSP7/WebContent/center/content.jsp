@@ -1,15 +1,8 @@
 <%@page import="com.itwillbs.board.BoardBean"%>
+<%@page import="com.itwillbs.board.ReplyBean"%>
 <%@page import="com.itwillbs.board.BoardDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,10 +38,9 @@
 		
 		// 글 조회수 정보를 1증가( updateReadCount(bno) )
 		bdao.updateReadCount(bno);
-		bdao.replyBoard(bno);
+
 		// 글 정보를 가져오는 메서드 생성( getBoard(bno) )
 		BoardBean bb = bdao.getBoard(bno);
-		BoardBean bb1 = bdao.getBoard(bno);
 		// 화면(테이블)에 출력
 	
 	%>
@@ -120,19 +112,19 @@
 			<td colspan="3"><%=bb.getContent() %></td>
 		</tr>
 	</table>
-	<form action="replyPro.jsp?bno=<%=bb.getBno()%>"> 
-	<table>
-		<tr>
-		<td>작성자</td>
-		<td><%=bb1.getName() %></td>
-		<td>내용</td>
-		<td><%=bb1.getContent() %></td>
-		<td>시간</td>
-		<td><%=bb1.getDate() %></td>
-		</tr>
-	</table>
-	댓글 작성<input type="text" name="reply"> <input type="submit">
-	</form>
+<%-- 	<form action="replyPro.jsp?bno=<%=bb.getBno()%>" method="post">  --%>
+<!-- 	<table> -->
+<!-- 		<tr> -->
+<!-- 		<td>작성자</td> -->
+<%-- 		<td><%=bb1.getName() %></td> --%>
+<!-- 		<td>내용</td> -->
+<%-- 		<td><%=bb1.getContent() %></td> --%>
+<!-- 		<td>시간</td> -->
+<%-- 		<td><%=bb1.getDate() %></td> --%>
+<!-- 		</tr> -->
+<!-- 	</table> -->
+<!-- 	댓글 작성<input type="text" name="reply"> <input type="submit"> -->
+<!-- 	</form> -->
 <div id="table_search">
 <input type="text" name="search" class="input_box">
 <input type="button" value="search" class="btn">

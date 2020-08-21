@@ -1,3 +1,4 @@
+<%@page import="com.itwillbs.board.ReplyBean"%>
 <%@page import="com.itwillbs.board.BoardDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -15,19 +16,19 @@
     -->
     <%
       // 한글처리
-      request.setCharacterEncoding("UTF-8");  
+    request.setCharacterEncoding("UTF-8");  
     int bno = Integer.parseInt(request.getParameter("bno"));
     %>
     <!-- 전달되는 정보를 BoardBean 객체에 저장(액션태그) -->
-    <jsp:useBean id="bb" class="com.itwillbs.board.BoardBean"/>
-    <jsp:setProperty property="*" name="bb"/>
+    <jsp:useBean id="bb1" class="com.itwillbs.board.ReplyBean"/>
+    <jsp:setProperty property="*" name="bb1"/>
     <!-- BoardDAO 객체 생성 => replyBoard() -->
     <%
        BoardDAO bdao = new BoardDAO();
-       bdao.replyBoard(bno);
+       bdao.insertReply(bno);
        
        // 페이지 이동(notice.jsp)
-       response.sendRedirect("notice.jsp");
+       response.sendRedirect("../main/main.jsp");
     %>
     
     
