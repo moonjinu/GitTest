@@ -1,0 +1,129 @@
+Servlet.txt
+
+
+  JavaEE - JSP/Servlet... 정보를 포함하는 JavaSE
+  
+  -> JSP(Java Server Page) : 클라이언트의 요청을 처리하기위해서  동적 컨텐츠를 생성하기 위한 기술(방법)
+     JSP2.2/Servlet3.0
+     JSP2.3/Servlet3.1 => tomcat8.x
+     
+   * JSP -> Java(Servlet) -> Class  
+   
+   
+ * 서블릿 - 자바에서 웹 개발을 하기위한 기술
+        - 사용자의 요청을 멀티 쓰레딩 방식으로 처리가능
+        - 동적 데이터 처리가능
+        
+   1) javax.servlet.Servlet 인터페이스를 구현
+   2) 1번을 따로 구현할 필요가 없거나, 구현이 힘들경우 
+     javax.servlet.http.HttpServlet을 구현 (보통 2번부터 시작)
+    
+   3) doGet()/doPost() 메서드 구현(오버라이딩), 전달인자로 
+    javax.servlet.http.HttpServletRequest, 
+    javax.servlet.http.HttpServletResponse 순서대로 사용
+   
+   4) 예외처리(IOException,ServletException)
+   
+   5) web.xml 파일에 매핑처리 ( 서블릿 3.0 이후 선택 )
+   
+   6) 해당 파일을 지정위치에 놓고 실행 
+      
+           
+  D:\workspace_jsp7\.metadata\.plugins\org.eclipse.wst.server.core
+  \tmp1\work\Catalina\localhost\JSTL_EL_JSP7\org\apache\jsp\EL
+  * JSP 파일 -> Servlet 파일
+  1) JSP페이지는 페이지 실행시(클라이언트 요청시) 서블릿으로 변환 
+  2) JSP 스크립틀릿 <% %>  => Servlet - service() 메서드에 들어감 
+  3) JSP 표현식 <%= %> => Servlet - service() 메서드 안에  out.println() 표시
+  4) JSP 선언문 <%! %> => Servlet 멤버 메서드로 변환
+  5) HTML 태그  =>  Servlet - service() 메서드안에 out.write() 표시
+  6) JSP page 디렉티브, 서블릿 변환시 참고용으로 사용
+   
+   
+   * model1 개발방식
+    -> XXXXForm.jsp -> XXXXPro.jsp
+    -> 개발속도가 빠른편
+    -> jsp페이지에서 모든 동작을 다 처리함(html,css,db,로직)
+    -> 유지보수가 매우 힘들다.
+    -> php페이지    
+   
+   
+   * MVC 구조(패턴) (model2 개발방식)
+   - M odel, V iew, C ontroller
+   
+          C  - M
+          |
+          V
+   
+   - Model : 비지니스 로직 처리(DB처리) - java
+   - View : 화면 처리 로직(화면) - jsp
+   - Controller : Model-View 연결  - Servlet
+   
+   -> 디자인 파트와, 개발(비지니스 로직) 분리해서 동시 개발이 가능
+   -> 구조가 복잡, 코드양이 많음, 시간이 오래걸림
+   => 유지보수에 특화된 개발 방식
+   
+   
+   
+   Model2 개발 페이지 이동 구조
+   * 절대적인 페이지 이동이 아님 (많이 사용되는 경우를 정리)
+   
+   1) 회원가입창 열기  ( 정보가 없는, 정보를 입력하는 페이지 요청 )
+    => 가상주소(.me) -> 실제 페이지 (.jsp)
+    
+    controller ( 주소 처리 ) -> ActionForward사용 (false-forward 방식 이동)
+   
+   2) 회원가입 처리 ( 정보를 받아서 처리하는 페이지 + 처리후 페이지 이동)
+   => 실제 페이지(.jsp) -> Action -> DAO -> DB -> Action -> 가상주소 (.me)
+   
+   Action 인터페이스를 구현한 객체를 사용해서 각각의 처리 동작
+   
+    그 이후 페이지 이동(ActionForward-true(sendRedirect))
+    
+   2-1) 회원가입 처리 ( 정보를 받아서 처리하는 페이지 + 처리후 페이지 이동)
+   => 실제 페이지(.jsp) -> Action -> DAO -> DB -> Action -> 가상주소 (.me)
+   
+   Action 인터페이스를 구현한 객체를 사용해서 각각의 처리 동작
+   
+      자바 스크립트 사용 이동
+      response 객체 사용 (contentType,PrintWriter)
+          출력 스트림객체 사용 화면에 출력되는(javascript 코드 구현)
+      * 컨트롤러로 전달되는 forward 객체의 정보는 null
+      
+  3) 회원 정보보기 
+  => 가상 주소(.me) -> Action -> DAO -> DB -> 실제주소 (.jsp)
+       
+     Action 인터페이스를 구현한 객체를 사용해서 처리 
+     페이지 이동시 forward 사용 이동
+     
+     
+  * model2 구조
+     [./] Main.me (가상주소)
+         => [./] 현재 프로젝트명 (http://localhost:8088/Model2JSP7/)        
+     [./] member/main.jsp (실제주소)
+        =>  [./] WebContent ~  
+     
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+  
+
+
+
