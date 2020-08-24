@@ -18,7 +18,7 @@
  
     <%
        BoardDAO bdao = new BoardDAO();
-       bdao.insertReply(bb1); 
+       bdao.insertReply(bb1);
        
        // 페이지 이동(content.jsp)
        response.sendRedirect("content.jsp");

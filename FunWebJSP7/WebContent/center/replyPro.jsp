@@ -25,7 +25,7 @@
     <!-- BoardDAO 객체 생성 => replyBoard() -->
     <%
        BoardDAO bdao = new BoardDAO();
-       bdao.insertReply(bno);
+       bdao.insertReply(bb1);
        
        // 페이지 이동(notice.jsp)
        response.sendRedirect("../main/main.jsp");
