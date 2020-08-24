@@ -509,6 +509,145 @@ public class BoardDAO {
 			}
 		}
 		// reInsertBoard()
+/*-------------------------------게시판-------------------------------*/	
+		// insertReply
+		public void insertReply(ReplyBean bb1){
+			int bno=0;
+			try{
+				getCon();
+				sql="select content_reply where bno =?";
+				
+				pstmt = con.prepareStatement(sql);
+				
+				pstmt.setInt(1, bno);
+				
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()){
+					
+			
+					con = getCon();
+					
+					sql = "insert into content_reply(bno, name, pass, content, re_ref, re_seq, re_lev, date) "
+							+ "values(?,?,?,?,?,?,?,now())";
+					pstmt = con.prepareStatement(sql);
+					
+					pstmt.setInt(1, bno);
+					pstmt.setString(2, bb1.getName());
+					pstmt.setString(3, bb1.getPass());
+					pstmt.setString(4, bb1.getContent());
+					pstmt.setInt(5, bb1.getRe_ref());
+					pstmt.setInt(6, bb1.getRe_seq());
+					pstmt.setInt(7, bb1.getRe_lev());
+					pstmt.setDate(8, bb1.getDate());
+					
+					pstmt.executeUpdate();
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally{
+				closeDB();
+			}
+			
+		}
+		// insertReply
+		
+		// replyList
+		public ArrayList replyList(){
+			
+			// 리스트 객체(배열) 생성
+			ArrayList replyList = new ArrayList();
+			try {
+				
+				// DB연결
+				getCon();
+				
+				// SQL(전체 글 정보 모두를 저장) & pstmt
+				sql = "select * from content_reply "
+					+ "order by re_ref desc";
+				
+				pstmt = con.prepareStatement(sql);
+				// 실행 -> 정보저장
+				rs = pstmt.executeQuery();
+				// 데이터 처리 (리스트에 저장)
+				while(rs.next()){
+					BoardBean bb1 = new BoardBean();
+					
+					bb1.setBno(rs.getInt("bno"));
+					bb1.setContent(rs.getString("content"));
+					bb1.setDate(rs.getDate("date"));
+					bb1.setName(rs.getString("name"));
+					bb1.setPass(rs.getString("pass"));
+					bb1.setRe_lev(rs.getInt("re_lev"));
+					bb1.setRe_ref(rs.getInt("re_ref"));
+					bb1.setRe_seq(rs.getInt("re_seq"));
+					
+					// 리스트 한칸에 행의 정보 하나를 저장
+					replyList.add(bb1);
+					
+					System.out.println("글 정보 저장 완료 : "+replyList);
+					
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}finally{
+				closeDB();
+			}
+				
+			return replyList;
+		}
+		
+		// replyList
+		
+		// getReply(bb1)
+		
+		public ReplyBean getReply(int bno){
+			ReplyBean bb1 = null;
+			try {
+				// DB연결
+				getCon();
+				// sql작성 & pstmt객체 생성
+				// 글번호에 해당하는 모든 글의 정보를 가져오기(select)
+				sql = "select * from content_reply "
+						+ "where bno = ?";
+				pstmt = con.prepareStatement(sql);
+				
+				pstmt.setInt(1, bno);
+				
+				// 실행
+				
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()){ // 데이터가 있으면 실행
+					// DB -> JSP 전달하기 위해서 BoardBean객체에 저장
+					bb1 = new ReplyBean();
+					
+					bb1.setBno(rs.getInt("bno"));
+					bb1.setContent(rs.getString("content"));
+					bb1.setDate(rs.getDate("date"));
+					bb1.setName(rs.getString("name"));
+					bb1.setPass(rs.getString("pass"));
+					bb1.setRe_lev(rs.getInt("re_lev"));
+					bb1.setRe_ref(rs.getInt("re_ref"));
+					bb1.setRe_seq(rs.getInt("re_seq"));
+
+				}
+				System.out.println("해당 글 저장 완료");
+				System.out.println(bb1.toString()); // 정보확인
+			} catch (Exception e) {
+				System.out.println("해당 글 저장 에러");
+				e.printStackTrace();
+			}finally{
+				closeDB();
+			}
+			
+			return bb1;
+		
+		}
+
+		// getReply(bb1)
+		
 	
 
 }

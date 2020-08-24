@@ -42,6 +42,9 @@
 		// 글 정보를 가져오는 메서드 생성( getBoard(bno) )
 		BoardBean bb = bdao.getBoard(bno);
 		// 화면(테이블)에 출력
+		
+		// 댓글정보 getReply
+		ReplyBean bb1 = bdao.getReply(bno);
 	
 	%>
 <div id="wrap">
@@ -112,19 +115,19 @@
 			<td colspan="3"><%=bb.getContent() %></td>
 		</tr>
 	</table>
-<%-- 	<form action="replyPro.jsp?bno=<%=bb.getBno()%>" method="post">  --%>
-<!-- 	<table> -->
-<!-- 		<tr> -->
-<!-- 		<td>작성자</td> -->
-<%-- 		<td><%=bb1.getName() %></td> --%>
-<!-- 		<td>내용</td> -->
-<%-- 		<td><%=bb1.getContent() %></td> --%>
-<!-- 		<td>시간</td> -->
-<%-- 		<td><%=bb1.getDate() %></td> --%>
-<!-- 		</tr> -->
-<!-- 	</table> -->
-<!-- 	댓글 작성<input type="text" name="reply"> <input type="submit"> -->
-<!-- 	</form> -->
+	<form action="replyPro.jsp?bno=<%=bb.getBno()%>" method="post"> 
+	<table>
+		<tr>
+		<td>작성자</td>
+		<td><%=bb1.getName() %></td>
+		<td>내용</td>
+		<td><%=bb1.getContent() %></td>
+		<td>시간</td>
+		<td><%=bb1.getDate() %></td>
+		</tr>
+	</table>
+	댓글 작성<input type="text" name="reply"> <input type="submit">
+	</form>
 <div id="table_search">
 <input type="text" name="search" class="input_box">
 <input type="button" value="search" class="btn">
