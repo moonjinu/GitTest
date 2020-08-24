@@ -88,7 +88,7 @@ quis ante......</dd>
     mapOption = { 
         center: new kakao.maps.LatLng(35.1584163, 129.0620714), // 지도의 중심좌표
         level: 3 // 지도의 확대 레벨
-    };\
+    };
 
 var map = new kakao.maps.Map(mapContainer, mapOption);
 
