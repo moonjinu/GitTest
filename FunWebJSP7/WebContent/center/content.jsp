@@ -131,14 +131,7 @@
 <input type="button" value="search" class="btn">
 </div>
 <div class="clear"></div>
-<div id="page_control">
-<a href="#">Prev</a>
-<a href="#">1</a><a href="#">2</a><a href="#">3</a>
-<a href="#">4</a><a href="#">5</a><a href="#">6</a>
-<a href="#">7</a><a href="#">8</a><a href="#">9</a>
-<a href="#">10</a>
-<a href="#">Next</a>
-</div>
+
 </article>
 <!-- 게시판 -->
 <!-- 본문들어가는 곳 -->

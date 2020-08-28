@@ -34,7 +34,7 @@
 		<nav id="top_menu">
 		<ul>
 			<li><a href="../index.jsp">HOME</a></li>
-			<li><a href="../company/welcome.html">COMPANY</a></li>
+			<li><a href="#">COMPANY</a></li>
 			<li><a href="#">SOLUTIONS</a></li>
 			<li><a href="../center/notice.jsp">BOARD</a></li>
 			<li><a href="#">CONTACT US</a></li>

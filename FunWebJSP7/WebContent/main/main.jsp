@@ -78,7 +78,7 @@ quis ante......</dd>
 
 </div>
 <div id="map" style="width:500px;height:400px;"></div>
-	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c29373c96ad3e93a2e9ef2415b158ee9"></script>
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=90d7008bd126dd87b722755a32d95326"></script>
 
 	<%
 	request.setCharacterEncoding("UTF-8");
@@ -86,13 +86,14 @@ quis ante......</dd>
 	<script>
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = { 
+			
         center: new kakao.maps.LatLng(35.1584163, 129.0620714), // 지도의 중심좌표
-        level: 3 // 지도의 확대 레벨
+        level:3 // 지도의 확대 레벨
     };
 
 var map = new kakao.maps.Map(mapContainer, mapOption);
 
-// 마커가 표시될 위치입니다 
+// 마커가 표시될 위치입니다 "D:/git/TestGit/src/com/itwillbs/member/action/MemberLoginAction.java"
 var markerPosition  = new kakao.maps.LatLng(35.1584163, 129.0620714); 
 
 // 마커를 생성합니다
