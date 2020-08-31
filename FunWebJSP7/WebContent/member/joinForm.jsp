@@ -138,15 +138,15 @@
 		<input type="text" name="id" class="id">
 		<input type="button" value="중복체크" class="dup" onclick="winopen();"><br>
 		<label>Password</label>
-		<input type="password" name="pass"><br>
+		<input type="password" name="pass" placeholder="4~16자리의 비밀번호를 입력하세요."><br>
 		<label>Retype Password</label>
-		<input type="password" name="pass2"><br>
+		<input type="password" name="pass2" placeholder="4~16자리의 비밀번호를 입력하세요."><br>
 		<label>Name</label>
 		<input type="text" name="name"><br>
 		<label>E-Mail</label>
 		<input type="email" name="email"><br>
 		<label>Birth</label>
-		<input type="text" name="birth"><br>
+		<input type="number" name="birth" maxlength="6" placeholder="800101"><br>
 		<label>Gender</label>
 		<input type="radio" name="gender" value="남">남
 		<input type="radio" name="gender" value="여">여		
@@ -156,7 +156,7 @@
 		<fieldset>
 		<legend>Optional</legend>
 		<label>Address</label>
-		<input type="text" name="addr" id="sample5_address" placeholder="주소">
+		<input type="text" name="addr" id="sample5_address" placeholder="주소">				
 		<input type="button" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
 		
 		<label>Phone Number</label>
@@ -194,6 +194,49 @@
     		  document.fr.id.focus();
     		  return false;
     	  }
+    	  
+    	  if(document.fr.pass.value.length <=4){
+    		  alert("4~16자리 비밀번호를 입력하세요");
+    		  document.fr.pass.focus();
+    		  return false;
+    	  }
+    	  
+    	  if(document.fr.pass2.value.length<=4){
+    		  alert("비밀번호을 확인 해주세요")
+	    	  document.fr.pass2.focus();
+    	  	  return false;
+    	  }
+    	  
+    	  if(document.fr.pass.value != document.fr.pass2.value){
+	    	  alert("비밀번호를 확인 해주세요")
+	    	  document.fr.pass2.focus();
+	    	  return false;
+    	  }
+    	  
+    	  if(document.fr.name.value.length <=0){
+    		  alert("이름을 입력해주세요");
+    		  document.fr.name.focus();
+    		  return false;
+    	  }
+    	  
+    	  if(document.fr.email.value.length <=0){
+    		  alert("이메일을 입력해주세요");
+    		  document.fr.email.focus();
+    		  return false;
+    	  }
+    	  
+    	  if(document.fr.birth.value.length >=7 || document.fr.birth.value.length <6){
+    		  alert("생년월일을 확인해주세요");
+    		  document.fr.birth.focus();
+    		  return false;
+    	  }
+    	  if(document.fr.gender[0].checked == false && document.fr.gender[1].checked == false){
+    		  alert("성별을 입력해주세요");
+    		  document.fr.gender.focus();
+    		  return false;
+    	  }
+    	  
+    	  
       }/////////////////////////////////
       
       function winopen(){
