@@ -20,6 +20,7 @@
    /* EXAMPLE */
    DD_belatedPNG.fix('#wrap');
    DD_belatedPNG.fix('#main_img');   
+   
 
  </script>
  <![endif]--> 

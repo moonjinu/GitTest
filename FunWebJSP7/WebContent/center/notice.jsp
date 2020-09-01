@@ -125,8 +125,17 @@
 				%>
 			</table>
 			<div id="table_search">
-				<input type="text" name="search" class="input_box"> <input
-					type="button" value="search" class="btn">
+			<form action="search.jsp" method="get" name="search">
+				<select>
+				<option value="none">전체목록</option>
+				<option value="name">작성자</option>
+				<option value="subject">제목</option>
+				<option value="content">내용</option>
+				<option value="subject_content">제목+내용</option>
+				</select>
+				<input type="text" name="search" class="input_box"> 
+				<input type="submit" value="search" class="btn">
+			</form>
 			</div>
 			<!-- 페이지 이동  -->
 			<div class="clear"></div>
