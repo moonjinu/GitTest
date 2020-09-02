@@ -1,0 +1,674 @@
+<boardDAO.java>ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+package Dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+
+
+
+import Connection.ConnectDB;
+import Vo.BoardVO;
+import Vo.PageVO;
+import Vo.SearchVO;
+
+public class BoardDAO {
+
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+//page적용 안했을때 리스트 가져오는 쿼리
+
+public List<BoardVO> selectBoardList(){
+
+Connection conn = ConnectDB.getConnection();
+  PreparedStatement ps=null;
+  ResultSet rs=null;
+
+ String sql = "select *from board";
+
+ List<BoardVO> voList = new ArrayList<BoardVO>();
+
+
+
+ try{
+   ps = conn.prepareStatement(sql);  
+   ps.setInt(2, page.getStart());
+   ps.setInt(1, page.getEnd());
+   rs = ps.executeQuery();
+   
+   while(rs.next()){
+    BoardVO vo = new BoardVO();
+    vo.setSEQ(rs.getInt("SEQ"));
+    vo.setB_title(rs.getString("b_title"));
+    vo.setB_content(rs.getString("b_content"));
+    vo.setB_password(rs.getString("b_password"));
+    vo.setB_writer(rs.getString("b_writer"));
+    vo.setB_write_date(rs.getString("b_write_date"));
+    vo.setB_hits(rs.getInt("b_hits"));
+    vo.setRef(rs.getInt("ref"));
+    vo.setIndent(rs.getInt("indent"));
+    vo.setStep(rs.getInt("step")); 
+    voList.add(vo);
+
+   }
+   
+  }catch(SQLException e){
+   e.printStackTrace();
+  }finally{
+   ConnectDB.close(conn, ps, rs);
+  }
+  return voList;
+ }
+
+ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+//page 적용한 후에 게시판 리스트 가져오는 쿼리
+
+public List<BoardVO> selectBoardList(PageVO page){
+
+
+  Connection conn = ConnectDB.getConnection();
+  PreparedStatement ps=null;
+  ResultSet rs=null;
+  String sql = "select * from " +
+    "(select rownum r, seq, b_writer, b_content, b_write_date, b_hits, b_password, b_title, ref, indent, step from " +
+    "(select * from board order by ref desc, step asc ) where rownum <=? ) where r >= ?";
+  
+  List<BoardVO> voList = new ArrayList<BoardVO>();
+  
+  try{
+   ps = conn.prepareStatement(sql);  
+   ps.setInt(2, page.getStart());
+   ps.setInt(1, page.getEnd());
+   rs = ps.executeQuery();
+   
+   while(rs.next()){
+    BoardVO vo = new BoardVO();
+    vo.setSEQ(rs.getInt("SEQ"));
+    vo.setB_title(rs.getString("b_title"));
+    vo.setB_content(rs.getString("b_content"));
+    vo.setB_password(rs.getString("b_password"));
+    vo.setB_writer(rs.getString("b_writer"));
+    vo.setB_write_date(rs.getString("b_write_date"));
+    vo.setB_hits(rs.getInt("b_hits"));
+    vo.setRef(rs.getInt("ref"));
+    vo.setIndent(rs.getInt("indent"));
+    vo.setStep(rs.getInt("step")); 
+    voList.add(vo);
+
+   }
+   
+  }catch(SQLException e){
+   e.printStackTrace();
+  }finally{
+   ConnectDB.close(conn, ps, rs);
+  }
+  return voList;
+ }
+
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+ //글번호에 해당하는 게시판 하나 가져오는 쿼리
+ public BoardVO selectBoard(int SEQ){
+  Connection conn = ConnectDB.getConnection();
+  PreparedStatement ps=null;
+  ResultSet rs=null;
+  String sql = "select *from board where seq=?";
+  BoardVO vo = new BoardVO();
+  
+  try{
+   ps = conn.prepareStatement(sql);
+   ps.setInt(1, SEQ);
+   rs=ps.executeQuery();
+   
+   while(rs.next()){
+    vo.setSEQ(SEQ);
+    vo.setB_title(rs.getString("b_title"));
+    vo.setB_writer(rs.getString("b_writer"));
+    vo.setB_write_date(rs.getString("b_write_date"));
+    vo.setB_hits(rs.getInt("b_hits"));
+    vo.setB_content(rs.getString("b_content"));
+    vo.setB_password(rs.getString("b_password"));
+    vo.setRef(rs.getInt("ref"));
+    vo.setIndent(rs.getInt("indent"));
+    vo.setStep(rs.getInt("step"));
+   }
+  }catch(SQLException e){
+   e.printStackTrace();
+  }finally{
+   ConnectDB.close(conn, ps, rs);
+  }
+  return vo;
+ }
+ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+//seq의 max 값을 가져오는 쿼리 -> 답글 ref를 지정해줄때 필요함
+ public int getMax() {
+  Connection conn = ConnectDB.getConnection();
+  PreparedStatement ps = null;
+  ResultSet rs = null;
+  int max = 0;
+  String sql ="SELECT MAX(seq) FROM board";
+  
+  try {
+   
+   ps = conn.prepareStatement(sql);
+   rs = ps.executeQuery();
+   
+   if(rs.next()) {
+    max=rs.getInt(1);
+   }
+   
+  }catch(Exception e) {
+   
+  }finally {
+   ConnectDB.close(conn, ps, rs);
+  }
+  return max;
+ }
+ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+//글쓰기 쿼리
+ public void insertBoard(BoardVO boardVO, int max){
+  Connection conn = ConnectDB.getConnection();
+  PreparedStatement ps=null;
+  
+  String sql = "insert into board values"+"(seq.nextval,?,?,sysdate,?,?,?,?, ?, ?)";
+  
+  try{
+   ps= conn.prepareStatement(sql);
+   ps.setInt(1, boardVO.getSEQ());
+   //int seq = this.selectSeq(boardVO.getSEQ());
+   //System.out.println("insert : " +seq);
+   ps.setString(1, boardVO.getB_writer());
+   ps.setString(2, boardVO.getB_content());
+   ps.setString(3, boardVO.getB_write_date());
+   ps.setInt(3, boardVO.getB_hits());
+   ps.setString(4, boardVO.getB_password());
+   ps.setString(5, boardVO.getB_title());
+   ps.setInt(6, max+1);
+   ps.setInt(7, boardVO.getIndent());
+   ps.setInt(8, boardVO.getStep());
+   //System.out.println(boardVO);
+   ps.executeUpdate();
+   //ConnectDB.close(conn, ps);
+   
+  }catch(SQLException e){
+   e.printStackTrace();
+  }finally{
+   ConnectDB.close(conn, ps);
+  }
+ }
+ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+//답글 달때 사용하는 쿼리
+ public void replyBoard(BoardVO boardVO){
+  Connection conn = ConnectDB.getConnection();
+  PreparedStatement ps=null;
+  
+  String sql = "insert into board values"+"(seq.nextval,?,?,sysdate,?,?,?,?,?,?)";
+  
+  try{
+  
+   ps= conn.prepareStatement(sql);
+   ps.setInt(1, boardVO.getSEQ());
+   ps.setString(1, boardVO.getB_writer());
+   ps.setString(2, boardVO.getB_content());
+   ps.setString(3, boardVO.getB_write_date());
+   ps.setInt(3, boardVO.getB_hits());
+   ps.setString(4, boardVO.getB_password());
+   ps.setString(5, boardVO.getB_title());
+   ps.setInt(6, boardVO.getRef());
+   ps.setInt(7, boardVO.getIndent()+1);
+   ps.setInt(8, boardVO.getStep()+1);
+   ps.executeUpdate();
+   
+   System.out.println("dao replyBoard!: " + " " +boardVO.getSEQ() + " " + boardVO.getRef() + " " +  boardVO.getIndent() + " " + boardVO.getStep());
+  }catch(SQLException e){
+   e.printStackTrace();
+  }finally{
+   ConnectDB.close(conn, ps);
+  }
+ }
+ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+//게시판 수정하는 쿼리
+ public void editBoard(BoardVO boardVO){
+  Connection conn = ConnectDB.getConnection();
+  PreparedStatement ps = null;
+  //ResultSet rs = null;
+  
+  String sql = "update board set b_title=?, b_password=?, b_content=? where seq=?";
+  
+  try{
+   ps=conn.prepareStatement(sql);
+   ps.setString(1, boardVO.getB_title());
+   ps.setString(2, boardVO.getB_password());
+   ps.setString(3, boardVO.getB_content());
+   ps.setInt(4, boardVO.getSEQ());
+   ps.executeUpdate();
+   System.out.println("update 성공!");
+  }catch(SQLException e){
+   e.printStackTrace();
+  }finally{
+   ConnectDB.close(conn, ps);
+  }
+  
+ }
+ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+//seq에 해당하는 글을 삭제하는 쿼리
+ public void deleteBoard(int seq){
+  Connection conn = ConnectDB.getConnection();
+  PreparedStatement ps = null;
+  
+  String sql = "delete from board where seq=?";
+  
+  try{
+   ps = conn.prepareStatement(sql);
+   ps.setInt(1, seq);
+   ps.executeUpdate();
+   System.out.println("삭제 성공");
+  }catch(SQLException e){
+   e.printStackTrace();
+  }finally{
+   ConnectDB.close(conn, ps);
+  }
+ }
+ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+//글을 클릭했을때 글조회수를 올려주는 쿼리
+ public void hitsUp(int seq){
+  Connection conn = ConnectDB.getConnection();
+  PreparedStatement ps = null;
+  
+  String sql =  "update board set b_hits = (b_hits+1) where seq=?";
+  
+  try{
+   ps=conn.prepareStatement(sql);
+   ps.setInt(1, seq);
+   ps.executeUpdate();
+   System.out.println("성공");
+  }catch(SQLException e){
+   e.printStackTrace();
+   
+  }finally{
+   ConnectDB.close(conn, ps);
+  }
+ }
+ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+//seq에 해당하는 글번호를 가져오는 쿼리... (왜만들었지 필요없는듯...)
+ public int selectSeq(int seq){
+  int oriSeq = 0;
+  Connection conn = ConnectDB.getConnection();
+  PreparedStatement ps = null;
+  ResultSet rs = null;
+  
+  String sql = "select seq from board where seq = ?";
+  
+  try{
+   ps = conn.prepareStatement(sql);
+   ps.setInt(1, seq);
+   rs=ps.executeQuery();
+   
+   while(rs.next()){
+   oriSeq = rs.getInt("seq");
+   System.out.println(oriSeq + "성공");
+   }
+      
+  
+  }catch(SQLException e){
+   e.printStackTrace();
+  }finally{
+   ConnectDB.close(conn, ps, rs);
+  }
+  return oriSeq;
+  
+  
+ }
+ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+//답글을 썼을때 해당되는 글의 step을 변경해주기 위해 사용하는 쿼리
+ public void updateStep(int ref, int step) {
+  Connection conn = ConnectDB.getConnection();
+  PreparedStatement ps = null;
+  
+  String sql = "update board set step = step +1 where ref =? and step > ?";
+  
+  try {
+   
+   ps = conn.prepareStatement(sql);
+   ps.setInt(1, ref);
+   ps.setInt(2, step);
+   ps.executeUpdate();
+   //System.out.println("update step");
+  }catch(Exception e) {
+   
+  }finally {
+   ConnectDB.close(conn, ps);
+  }
+ }
+
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+//총 리스트의 개수를 가져오는 쿼리
+
+ public int countBoard(){
+  int cnt = 0;
+  Connection conn = ConnectDB.getConnection();
+  PreparedStatement ps = null;
+  ResultSet rs = null;
+  
+  String sql = "select count(*) from board";
+  
+  try{
+   ps=conn.prepareStatement(sql);
+   rs = ps.executeQuery();
+   rs.next();
+   cnt = rs.getInt("count(*)");
+  }catch(SQLException e){
+   e.printStackTrace();
+  }finally{
+   ConnectDB.close(conn, ps, rs);
+  } 
+  return cnt;
+ }
+ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+//검색한 결과에 해당되는 리스트의 개수를 가져오는 쿼리
+ public int countBoard(SearchVO search){
+  int cnt = 0;
+  Connection conn = ConnectDB.getConnection();
+  PreparedStatement ps = null;
+  ResultSet rs = null;
+  
+  String sql = "select count(*) from board ";
+    if("b_title".equals(search.getSearchKind())){
+     sql += "where b_title like   ?  " ;
+   }else if("b_writer".equals(search.getSearchKind())){
+     sql += "where b_writer like   ? " ;
+   }else{
+     sql += "where b_content like   ?  " ;
+   }
+     
+  
+  try{
+   ps=conn.prepareStatement(sql);
+   ps.setString(1, "%"+search.getSearchStr()+"%");
+   rs = ps.executeQuery();
+   rs.next();
+   cnt = rs.getInt("count(*)");
+   System.out.println(cnt);
+  }catch(SQLException e){
+   e.printStackTrace();
+  }finally{
+   ConnectDB.close(conn, ps, rs);
+  }
+  
+  return cnt;
+ }
+ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+//검색한 내용에 해당되는 리스트를 가져오는 쿼리
+ public List<BoardVO> searchBoard(SearchVO search, PageVO page){
+  Connection conn = ConnectDB.getConnection();
+  PreparedStatement ps = null;
+  ResultSet rs = null;
+  
+  String sql = "select * from (select rownum r, seq, b_writer, b_content, b_write_date, b_hits, b_password, b_title, ref, indent, step from " ;
+    
+  if("b_title".equals(search.getSearchKind())){
+    sql += "(select * from board where b_title like   ? ) " ;
+  }else if("b_writer".equals(search.getSearchKind())){
+    sql += "(select * from board where b_writer like   ? ) " ;
+  }else{
+    sql += "(select * from board where b_content like   ? ) " ;
+  }
+    sql+="where rownum <=? ) where r >= ?";  
+  
+  List<BoardVO> voList = new ArrayList<BoardVO>();
+  try{
+  
+   ps = conn.prepareStatement(sql);
+   ps.setString(1, "%"+search.getSearchStr()+"%");
+   ps.setInt(3, page.getStart());
+   ps.setInt(2, page.getEnd());
+   rs = ps.executeQuery();
+   
+   while(rs.next()){
+    BoardVO vo = new BoardVO();
+    vo.setSEQ(rs.getInt("SEQ"));
+    vo.setB_title(rs.getString("b_title"));
+    vo.setB_content(rs.getString("b_content"));
+    vo.setB_password(rs.getString("b_password"));
+    vo.setB_writer(rs.getString("b_writer"));
+    vo.setB_write_date(rs.getString("b_write_date"));
+    vo.setB_hits(rs.getInt("b_hits"));
+    vo.setRef(rs.getInt("ref"));
+    vo.setIndent(rs.getInt("indent"));
+    vo.setStep(rs.getInt("step"));
+    voList.add(vo);   
+  }catch(Exception e){
+   e.printStackTrace();
+  }finally{
+   ConnectDB.close(conn, ps, rs);
+  }
+  return voList;
+ }
+ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+ public static void main(String[] args) {
+  BoardDAO dao = new BoardDAO();
+  //PageVO pvo = new PageVO();
+  SearchVO svo = new SearchVO();
+  svo.setSearchKind("b_title");
+  svo.setSearchStr("키키");
+  /*pvo.setEnd(10);
+  pvo.setStart(1);
+  dao.searchBoard(svo, pvo);*/
+//  dao.countSearch(svo);
+  //BoardVO vo = new BoardVO();
+  //vo.setSEQ(2);
+  //dao.deleteBoard(2);
+  //dao.hitsUp(19);
+  //System.out.println("count:"+dao.countBoard());
+  /*PageVO p = new PageVO();
+  p.setEnd(30);
+  p.setStart(20);
+  System.out.println(dao.selectBoardList(p));*/
+  //dao.insertBoard(boardVO)
+  //System.out.println(dao.selectSeq(3));
+  /*vo.setB_title("4시2분");
+  vo.setB_password("1234");
+  vo.setB_content("update test");
+  vo.setSEQ(16);
+  dao.selectBoardList();
+  dao.selectBoard(16);
+  dao.editBoard(vo);*/
+  /*BoardVO boardVO = new BoardVO();
+  //boardVO.setSEQ(7);
+  boardVO.setB_title("안녕");
+  boardVO.setB_content("insert 테스트");
+  boardVO.setB_password("1234");
+  boardVO.setB_writer("test");
+  boardVO.setB_write_date("2010/01/01");
+  boardVO.setB_hits(1);
+  dao.insertBoard(boardVO);
+  System.out.println(boardVO);*/
+ }
+ 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1. SearchVO 추가
+
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+package Vo;
+
+
+
+public class SearchVO {
+
+ private String searchKind;    //검색할 카테고리
+
+ private String searchStr;     //검색어
+
+ private String division;       //검색 인지 그냥 게시판인지 구분해줄 조건 
+
+ 
+
+ public String getDivision() {
+
+  return division;
+
+ }
+
+ public void setDivision(String division) {
+
+  this.division = division;
+
+ }
+
+ public String getSearchKind() {
+
+  return searchKind;
+
+ }
+
+ public void setSearchKind(String searchKind) {
+
+  this.searchKind = searchKind;
+
+ }
+
+ public String getSearchStr() {
+
+  return searchStr;
+
+ }
+
+ 
+
+ public void setSearchStr(String searchStr) {
+
+  this.searchStr = searchStr;
+
+ }
+
+ @Override
+
+ public String toString() {
+
+  return "SearchVO [searchKind=" + searchKind + ", searchStr="
+
+    + searchStr + ", division=" + division + "]";
+
+ } 
+
+}
+
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+2. BoardList.jsp 페이지에 검색하는 부분 추가
+form action="BoardList.jsp" method="post">
+    <table align="center">
+     <tr align="center">
+     
+     <td align="center"><select name="searchKind">
+        <option value="b_title">제목</option>
+        <option value="b_writer">작성자</option>
+        <option value="b_content">내용</option>
+      </select></td>
+     
+      <td align="center">&nbsp;&nbsp;<input type="text" name="searchStr" size="30%"></td>
+      
+      <td align="center"><input type="hidden" name="division" value="search"></td>
+      
+      <td>&nbsp;&nbsp;&nbsp;<button class="btn btn-default" type="submit">검색</button></td>
+     </tr>
+
+    </table>
+</form>
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+3. searchBoard.jsp 페이지 추가
+<%@page import="java.util.List"%>
+<%@page import="Vo.PageVO"%>
+<%@page import="Dao.BoardDAO"%>
+<%@page import="Vo.BoardVO"%>
+<%@page import="Vo.SearchVO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<% 
+ request.setCharacterEncoding("utf-8");
+ BoardVO bvo = new BoardVO();
+ BoardDAO bdao = new BoardDAO();
+ int pg=Integer.parseInt(request.getParameter("pg"));
+ PageVO pvo = new PageVO();
+ pvo.setPage(pg);
+ SearchVO svo = new SearchVO();
+ svo.setSearchKind(request.getParameter("searchKind"));
+ svo.setSearchStr(request.getParameter("searchStr"));
+ bdao.searchBoard(svo, pvo);
+ List<BoardVO> bList = (List<BoardVO>)bdao.searchBoard(svo, pvo);
+ request.setAttribute("division", "search");
+
+%>
+<body>
+
+<%
+response.setHeader("refresh", "0; /BoardTest/Board/BoardList.jsp"); %> 
+</body>
+</html>
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+
+
+
+
+

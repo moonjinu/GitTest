@@ -509,6 +509,57 @@ public class BoardDAO {
 			}
 		}
 		// reInsertBoard()
-
+		// searchnameList()
+		public ArrayList searchBoardList(String id){
+			
+			// 리스트 객체(배열) 생성
+			ArrayList boardList = new ArrayList();
+			try {
+				
+				// DB연결
+				getCon();
+				
+				// SQL(전체 글 정보 모두를 저장) & pstmt
+				sql = "select * from fun_board "
+					+ "where id=?"
+					+ "order by re_ref desc";
+				
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, id);
+				// 실행 -> 정보저장
+				rs = pstmt.executeQuery();
+				// 데이터 처리 (리스트에 저장)
+				while(rs.next()){
+					BoardBean bb = new BoardBean();
+					
+					bb.setBno(rs.getInt("bno"));
+					bb.setContent(rs.getString("content"));
+					bb.setDate(rs.getDate("date"));
+					bb.setFile(rs.getString("file"));
+					bb.setIp(rs.getString("ip"));
+					bb.setName(rs.getString("name"));
+					bb.setPass(rs.getString("pass"));
+					bb.setRe_lev(rs.getInt("re_lev"));
+					bb.setRe_ref(rs.getInt("re_ref"));
+					bb.setRe_seq(rs.getInt("re_seq"));
+					bb.setReadcount(rs.getInt("readcount"));
+					bb.setSubject(rs.getString("subject"));
+					
+					// 리스트 한칸에 행의 정보 하나를 저장
+					boardList.add(bb);
+					
+					System.out.println("글 정보 저장 완료 : "+boardList);
+					
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}finally{
+				closeDB();
+			}
+				
+			return boardList;
+		}
+		
+		// searchBoardList() : 글 전체 목록
 
 }

@@ -125,20 +125,21 @@
 				%>
 			</table>
 			<div id="table_search">
-			<form action="search.jsp" method="get" name="search">
-				<select>
-				<option value="none">전체목록</option>
-				<option value="name">작성자</option>
-				<option value="subject">제목</option>
+			<form action="search.jsp" method="get">
+				<select name="search">
+				<option value="none" id="1">전체목록</option>
+				<option value="id" id="2">작성자</option>
+				<option value="subject" id="3">제목</option>
 				<option value="content">내용</option>
-				<option value="subject_content">제목+내용</option>
+				<option value="subject+content">제목+내용</option>
 				</select>
-				<input type="text" name="search" class="input_box"> 
+				<input type="text" class="input_box" name="word"> 
 				<input type="submit" value="search" class="btn">
 			</form>
 			</div>
 			<!-- 페이지 이동  -->
 			<div class="clear"></div>
+			
 			<div id="page_control">
 			<%
 		// 다른페이지 이동버튼
